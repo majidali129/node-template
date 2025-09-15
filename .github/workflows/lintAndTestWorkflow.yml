@@ -1,0 +1,23 @@
+name: Lint And Test Workflow,
+on: 
+    pull_request:
+        branches:
+        - main
+
+jobs: 
+    lint-and-test:
+        name: Lint And Test
+        runs-on: ubuntu-latest
+        strategy: 
+            matrix:
+                node-version: [24.8]
+
+        steps: 
+          - uses: actions/checkout@v4
+          - name: Use Node.js ${{matrix.node-version}}
+            uses: actions/setup-node@v3
+            with:
+              node-version: ${{matrix.node-version}}
+          - run: pnpm ci
+          - run: pnpm run lint
+          - run: pnpm run test
